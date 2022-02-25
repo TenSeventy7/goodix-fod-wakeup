@@ -1,6 +1,6 @@
 id=samsung-fod-wakeup
 name=Samsung FOD Wakeup
-version=2.1
-versionCode=22022506
+version=2.5
+versionCode=22022507
 author=TenSeventy7
 description=Tiny service to bring features such as 'tap to AOD' and 'FOD on screen-off' to devices running AOSP.
