@@ -12,14 +12,15 @@
 
 #include <stdio.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <linux/fb.h>
 #include <linux/input.h>
 #include "wakeup.h"
 
-static void wakeup_nezuko()
+static void wakeup_fod()
 {
-	if (readfint(BLDEV) <= FB_BLANK_NORMAL) // screen is already on
+	if (readfint(BLDEV) > 3) // screen is already on
 		return;
 
 	dbg(":: Wake-up the screen\n");
@@ -28,22 +29,26 @@ static void wakeup_nezuko()
 	send_input(EVDEV, EV_SYN, SYN_REPORT, 0);
 
 	for(;;) {
-		if (readfint(BLDEV) != FB_BLANK_UNBLANK)
+		if (readfint(BLDEV) <= 5)
 			continue;
 
 		dbg(":: Screen on.\n");
 		dbg(":: Emulating touches\n");
 
-		send_input(EVDEV, EV_KEY, BTN_TOUCH, 1);
-		send_input(EVDEV, EV_ABS, ABS_MT_TRACKING_ID, 2060);
-		send_input(EVDEV, EV_SYN, SYN_REPORT, 0);
-
-		send_input(EVDEV, EV_KEY, BTN_TOUCH, 0);
-		send_input(EVDEV, EV_SYN, SYN_REPORT, 0);
+		system("input touchscreen swipe 443 1972 443 1972 500");
 
 		dbg(":: Done\n");
 		return;
 	}
+}
+
+static void wakeup_aod()
+{
+	if (readfint(BLDEV) > 3) // screen is already on
+		return;
+
+	dbg(":: Trigger ambient display\n");
+	system("am broadcast -a com.android.systemui.doze.pulse --user 0");
 }
 
 int main()
@@ -52,9 +57,10 @@ int main()
 	struct input_event ev;
 	size_t evsize = sizeof(struct input_event);
 
-	dbg("FODWakeup %s\n", APP_VERSION);
-	dbg("Tiny service for in-display fingerprint to do tap-to-wake-and-scan\n");
+	dbg("SamsungFODWakeup %s\n", APP_VERSION);
+	dbg("Tiny service for in-display fingerprint to do tap-to-wake-and-scan on Samsung devices\n");
 	dbg("Copyright 2019, Nanda Oktavera\n");
+	dbg("Extensions 2021, John Vincent\n");
 
 	if (getuid() != 0){
 		printf("Permission denied, please run as root. exiting\n");
@@ -69,12 +75,24 @@ int main()
 			continue;
 		}
 
-		if (ev.code == INP_OFF && ev.value == 1)
-			wakeup_nezuko();
-		else
+		if (ev.value == 1) {
+			switch (ev.code) {
+				case INP_OFF:
+					wakeup_fod();
+					break;
+				case INP_AOD:
+					wakeup_aod();
+					break;
+				default:
+					usleep(DELAY);
+					break;
+			}
+		} else {
 			usleep(DELAY);
+		}
 	}
 
+	dbg(":: Closing %s\n", EVDEV);
 	close(fd);
 	return 0;
 }

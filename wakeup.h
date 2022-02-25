@@ -12,12 +12,14 @@
 
 // #define DEBUG
 
-#ifndef GOODIXTS_WAKEUP_H
-#define GOODIXTS_WAKEUP_H
+#ifndef SECTS_WAKEUP_H
+#define SECTS_WAKEUP_H
 
-#define EVDEV   "/dev/input/event2" // goodix_ts input event path
-#define BLDEV   "/sys/class/backlight/panel0-backlight/bl_power"
-#define INP_OFF 325 // when area is touched while screen is off
+#define EVDEV   "/dev/input/event4" // sec_touchscreen input event path
+#define PRDEV   "/dev/input/event6" // sec_touchproximity input event path
+#define BLDEV   "/sys/class/backlight/panel/actual_brightness"
+#define INP_OFF 455 // when area is touched while screen is off for longpress
+#define INP_AOD 454 // when area is touched while screen is off for singletap
 #define DELAY   10000
 
 #ifdef DEBUG
@@ -29,5 +31,5 @@
 int send_input(char *input, uint16_t type, uint16_t code, uint16_t value);
 int readfint(char *file);
 
-#define APP_VERSION "1.3"
+#define APP_VERSION "1.4"
 #endif
