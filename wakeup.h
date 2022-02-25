@@ -23,7 +23,8 @@
 #define unlikely(x)     (x)
 #endif
 
-#define EVDEV   "/dev/input/event4" // sec_touchscreen input event path
+#define EVDEV   "/dev/input/event8" // sec_touchpad input event path
+#define TSDEV   "/dev/input/event4" // sec_touchscreen input event path
 #define PRDEV   "/sys/devices/virtual/sensors/proximity_sensor/raw_data" // proximity sensor raw data
 #define BLDEV   "/sys/class/backlight/panel/actual_brightness"
 #define INP_OFF 455 // when area is touched while screen is off for longpress

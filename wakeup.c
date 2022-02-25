@@ -26,9 +26,9 @@ static void wakeup_fod()
 	}
 
 	dbg(":: Wake-up the screen.\n");
-	send_input(EVDEV, EV_KEY, KEY_WAKEUP, 1);
-	send_input(EVDEV, EV_KEY, KEY_WAKEUP, 0);
-	send_input(EVDEV, EV_SYN, SYN_REPORT, 0);
+	send_input(TSDEV, EV_KEY, KEY_WAKEUP, 1);
+	send_input(TSDEV, EV_KEY, KEY_WAKEUP, 0);
+	send_input(TSDEV, EV_SYN, SYN_REPORT, 0);
 
 	for(;;) {
 		if (readfint(BLDEV) <= 5)
@@ -74,7 +74,7 @@ int main()
 	dbg(":: Reading %s\n", EVDEV);
 	fd = open(EVDEV, O_RDONLY | O_NONBLOCK);
 	while((rd = read(fd, &ev, evsize))) {
-		if (rd == -1 || likely(ev.value != INP_AOD || ev.value != INP_OFF)) {
+		if (rd == -1) {
 			usleep(DELAY);
 			continue;
 		}
