@@ -16,7 +16,7 @@
 #define SECTS_WAKEUP_H
 
 #define EVDEV   "/dev/input/event4" // sec_touchscreen input event path
-#define PRDEV   "/dev/input/event6" // sec_touchproximity input event path
+#define PRDEV   "/sys/devices/virtual/sensors/proximity_sensor/raw_data" // proximity sensor raw data
 #define BLDEV   "/sys/class/backlight/panel/actual_brightness"
 #define INP_OFF 455 // when area is touched while screen is off for longpress
 #define INP_AOD 454 // when area is touched while screen is off for singletap

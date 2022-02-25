@@ -75,6 +75,12 @@ int main()
 			continue;
 		}
 
+		if (readfint(PRDEV) >= 500){
+			dbg(":: Device is in pocket according to proximity sensor. Skipping event.\n");
+			usleep(DELAY);
+			continue;
+		}
+
 		if (ev.value == 1) {
 			switch (ev.code) {
 				case INP_OFF:
