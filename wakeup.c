@@ -74,12 +74,12 @@ int main()
 	dbg(":: Reading %s\n", EVDEV);
 	fd = open(EVDEV, O_RDONLY | O_NONBLOCK);
 	while((rd = read(fd, &ev, evsize))) {
-		if (rd == -1) {
+		if (rd == -1 || likely(ev.value != INP_AOD || ev.value != INP_OFF)) {
 			usleep(DELAY);
 			continue;
 		}
 
-		if (ev.value == 1) {
+		if (unlikely(ev.value == 1)) {
 			switch (ev.code) {
 				case INP_OFF:
 					wakeup_fod();

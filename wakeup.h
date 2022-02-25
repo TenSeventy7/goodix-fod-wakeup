@@ -15,6 +15,14 @@
 #ifndef SECTS_WAKEUP_H
 #define SECTS_WAKEUP_H
 
+#ifdef __GNUC__
+#define likely(x)       __builtin_expect(!!(x), 1)
+#define unlikely(x)     __builtin_expect(!!(x), 0)
+#else
+#define likely(x)       (x)
+#define unlikely(x)     (x)
+#endif
+
 #define EVDEV   "/dev/input/event4" // sec_touchscreen input event path
 #define PRDEV   "/sys/devices/virtual/sensors/proximity_sensor/raw_data" // proximity sensor raw data
 #define BLDEV   "/sys/class/backlight/panel/actual_brightness"
