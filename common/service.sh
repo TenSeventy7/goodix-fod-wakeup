@@ -8,4 +8,7 @@ MODDIR=${0%/*}
 
 # This script will be executed in late_start service mode
 while true;do sleep 1; [[ "$(getprop sys.boot_completed)" == "1" ]] && break; done
-nice -n 19 /system/bin/fod_wakeup &
+echo "singletap_enable,1" > /sys/devices/virtual/sec/tsp/cmd
+cat /sys/devices/virtual/sec/tsp/cmd_status
+cat /sys/devices/virtual/sec/tsp/cmd_result
+nice -n 12 /system/bin/fod_wakeup &
