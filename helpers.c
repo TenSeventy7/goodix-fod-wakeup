@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: BSD-3-Clause
  *
- * Goodix FOD Wakeup
+ * Samsung FOD Wakeup
  * Tiny service for in-display fingerprint to do tap-to-wake-and-scan
+ * for Samsung devices with a compatible kernel.
  *
  * Copyright (c) 2019 Nanda Oktavera
+ * Extensions 2021 John Vincent
  * Released under the terms of 3-clause BSD License
  *
  */
