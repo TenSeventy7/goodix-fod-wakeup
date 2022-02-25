@@ -20,10 +20,12 @@
 
 static void wakeup_fod()
 {
-	if (readfint(BLDEV) > 3) // screen is already on
+	if (readfint(BLDEV) > 3 || readfint(PRDEV) > 220) {
+		usleep(DELAY);
 		return;
+	}
 
-	dbg(":: Wake-up the screen\n");
+	dbg(":: Wake-up the screen.\n");
 	send_input(EVDEV, EV_KEY, KEY_WAKEUP, 1);
 	send_input(EVDEV, EV_KEY, KEY_WAKEUP, 0);
 	send_input(EVDEV, EV_SYN, SYN_REPORT, 0);
@@ -44,8 +46,10 @@ static void wakeup_fod()
 
 static void wakeup_aod()
 {
-	if (readfint(BLDEV) > 3) // screen is already on
+	if (readfint(BLDEV) > 3 || readfint(PRDEV) > 220) {
+		usleep(DELAY);
 		return;
+	}
 
 	dbg(":: Trigger ambient display\n");
 	system("am broadcast -a com.android.systemui.doze.pulse --user 0");
@@ -70,13 +74,7 @@ int main()
 	dbg(":: Reading %s\n", EVDEV);
 	fd = open(EVDEV, O_RDONLY | O_NONBLOCK);
 	while((rd = read(fd, &ev, evsize))) {
-		if (rd == -1){
-			usleep(DELAY);
-			continue;
-		}
-
-		if (readfint(PRDEV) >= 500){
-			dbg(":: Device is in pocket according to proximity sensor. Skipping event.\n");
+		if (rd == -1) {
 			usleep(DELAY);
 			continue;
 		}
