@@ -122,7 +122,7 @@ REPLACE="
 # Set what you want to display when installing your module
 
 print_modname() {
-  ui_print "Goodix FOD Wakeup Module"
+  ui_print "Samsung FOD Wakeup Module"
 }
 
 # Copy/extract your module files into $MODPATH in on_install.

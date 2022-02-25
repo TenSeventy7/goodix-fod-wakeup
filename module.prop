@@ -1,6 +1,6 @@
-id=goodix-fod-wakeup
-name=Goodix FOD Wakeup
-version=1.2
-versionCode=3
-author=okitavera
-description=Tiny service for in-display fingerprint to do tap-to-wake-and-scan
+id=samsung-fod-wakeup
+name=Samsung FOD Wakeup
+version=1.6
+versionCode=22022501
+author=TenSeventy7
+description=Tiny service to bring features such as 'tap to AOD' and 'FOD on screen-off' to devices running AOSP.
