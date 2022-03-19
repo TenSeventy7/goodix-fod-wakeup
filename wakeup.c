@@ -26,9 +26,7 @@ static void wakeup_fod()
 	}
 
 	dbg(":: Wake-up the screen.\n");
-	send_input(TSDEV, EV_KEY, KEY_WAKEUP, 1);
-	send_input(TSDEV, EV_KEY, KEY_WAKEUP, 0);
-	send_input(TSDEV, EV_SYN, SYN_REPORT, 0);
+	system("input keyevent KEYCODE_WAKEUP");
 
 	for(;;) {
 		if (readfint(BLDEV) <= 5)
